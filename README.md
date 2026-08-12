@@ -50,7 +50,7 @@ The training was conducted over 500 epochs with a batch size of 16, utilizing an
 
 ## Results
 
-The trained model successfully generated novel urease inhibitor candidates exhibiting desirable chemical properties. These molecules demonstrate potential for further experimental validation and development. The backbone was selected from our previous paper. The results gave insight on the subtitution for designing potent urease inhibitors.
+The trained model successfully generated novel caspase-3 inhibitor candidates exhibiting desirable chemical properties. These molecules demonstrate potential for further experimental validation and development. The backbone was selected from our previous paper. The results gave insight on the subtitution for designing potent urease inhibitors.
 
 ## TorchDrug Integration
 
