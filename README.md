@@ -1,76 +1,100 @@
-# Generative Modeling of Caspase 3 Inhibitors with TorchDrug's GCPN and RGCN
+Generative Modeling of Caspase-3 Inhibitor Candidates Using TorchDrug GCPN and RGCN
 
-This project focuses on the generation of novel caspase 3 inhibitors by leveraging the Graph Convolutional Policy Network (GCPN) and Relational Graph Convolutional Network (RGCN) models provided by [TorchDrug](https://torchdrug.ai/). The approach integrates reinforcement learning techniques to optimize molecular properties, aiming to discover potential therapeutic agents against caspase 3-related diseases.
+This project applies the Graph Convolutional Policy Network (GCPN) and Relational Graph Convolutional Network (RGCN) implementations provided by TorchDrug to generate candidate molecules within the chemical space of reported caspase-3 inhibitors. Supervised learning and reinforcement learning are combined to promote chemically valid structures and optimize selected molecular properties.
 
-## Overview
+The generated compounds are computational candidates and should not be considered confirmed caspase-3 inhibitors without additional activity prediction, molecular modeling, synthesis, and experimental validation.
 
-- **Objective**: Generate novel, chemically valid caspase 3 inhibitors with optimized properties.
-- **Dataset**: Curated caspase 3 inhibitors from [BindingDB](https://www.bindingdb.org/).
-- **Models Used**:
-  - **GCPN**: Graph Convolutional Policy Network for goal-directed molecular graph generation.
-  - **RGCN**: Relational Graph Convolutional Network for capturing relational information in molecular graphs.
-- **Training Criteria**:
-  - **PPO**: Proximal Policy Optimization for reinforcement learning.
-  - **NLL**: Negative Log-Likelihood for supervised learning.
-- **Hardware**: Trained on NVIDIA RTX 4070 GPU.
-- **Training Details**:
-  - **Epochs**: 500
-  - **Batch Size**: 16
-  - **Duration**: Approximately 3 hours
+Overview
 
-## Methodology
+* Objective: Generate chemically valid candidate molecules related to reported caspase-3 inhibitors.
+* Dataset: Curated compounds with reported caspase-3 activity obtained from BindingDB.
+* Models:
+    * GCPN: Graph Convolutional Policy Network for property-guided molecular graph generation.
+    * RGCN: Relational Graph Convolutional Network used as the message-passing backbone.
+* Training objectives:
+    * NLL: Negative log-likelihood for supervised pretraining.
+    * PPO: Proximal Policy Optimization for reinforcement learning.
+* Hardware: NVIDIA GeForce RTX 4070 GPU.
+* Training configuration:
+    * Epochs: 500
+    * Batch size: 16
+    * Approximate duration: 3 hours
 
-### Data Preparation
+Methodology
 
-The dataset comprises validated caspase 3 inhibitors extracted from BindingDB. These molecules were preprocessed to ensure compatibility with TorchDrug's modeling requirements.
+Data Preparation
 
-### Installation
+Compounds with reported caspase-3 activity were obtained from BindingDB and curated before training. The molecular structures were processed into graph representations compatible with TorchDrug.
 
-This project was developed and tested using:
+The presence of a compound in the source dataset does not independently establish its potency, selectivity, or suitability for therapeutic development.
 
-- **TorchDrug version**: 0.2.1  
-- **CUDA version**: 11.6.2 
-- **Python version**: 3.8.19 
-- **Environment manager**: Conda
+Environment Setup
 
-To replicate the environment, please use the provided `environment.yml` file.
+The project was developed and tested using:
 
-### Model Architecture
+* Python: 3.8.19
+* TorchDrug: 0.2.1
+* CUDA Toolkit: 11.6.2
+* Environment manager: Conda
 
-The neural network architecture consists of 8 layers, each with 256 neurons. The RGCN model serves as the backbone for feature extraction, while the GCPN model facilitates the generation of novel molecular graphs.
+Create the environment using the supplied environment.yml file:
 
-### Training Procedure
+conda env create -f environment.yml
+conda activate aihouman
 
-The training process involves a combination of supervised and reinforcement learning:
+The machine-specific prefix line should be removed from environment.yml before creating the environment on another system.
 
-- **Supervised Learning**: Utilizing NLL to guide the model in generating valid molecular structures.
-- **Reinforcement Learning**: Employing PPO to optimize specific molecular properties, such as drug-likeness and synthetic accessibility.
+Model Architecture
 
-The training was conducted over 500 epochs with a batch size of 16, utilizing an NVIDIA RTX 4070 GPU, and completed in approximately 3 hours.
+The RGCN backbone contains eight message-passing layers with a hidden dimension of 256. It extracts relational features from molecular graphs, while GCPN generates new molecular structures through sequential graph construction.
 
-## Results
+Training Procedure
 
-The trained model successfully generated novel caspase-3 inhibitor candidates exhibiting desirable chemical properties. These molecules demonstrate potential for further experimental validation and development. The backbone was selected from our previous paper. The results gave insight on the subtitution for designing potent urease inhibitors.
+Training consisted of two stages:
 
-## TorchDrug Integration
+1. Supervised learning: Negative log-likelihood was used to learn molecular graph-generation patterns from the curated dataset.
+2. Reinforcement learning: Proximal Policy Optimization was used to optimize selected computational properties, including drug-likeness and synthetic accessibility.
 
-This project extensively utilizes TorchDrug's capabilities for molecular graph generation and property optimization. For more information on TorchDrug's molecule generation tutorial, visit the [official documentation](https://torchdrug.ai/docs/tutorials/generation.html).
+The reported run was conducted for 500 epochs with a batch size of 16 on an NVIDIA GeForce RTX 4070 GPU.
 
-## References
+Results
 
-- TorchDrug Molecule Generation Tutorial: [https://torchdrug.ai/docs/tutorials/generation.html](https://torchdrug.ai/docs/tutorials/generation.html)
-- BindingDB Information: [https://www.bindingdb.org/bind/info.jsp](https://www.bindingdb.org/bind/info.jsp)
+The training curves show a general reduction in edge, node, stop, and total losses, together with improvements in their associated accuracy measures.
 
-## Recombination
+The trained model generated candidate molecular structures within the chemical space learned from the caspase-3 dataset. However, the training metrics assess model-learning behavior and do not establish caspase-3 inhibition.
 
-The model file is split into multiple parts to keep the size under 25 MB for upload constraints.
+The biological activity, target selectivity, synthetic feasibility, safety, and pharmacological properties of the generated molecules require further computational and experimental evaluation.
 
-### Recombine on Linux:
-```bash
-cat Urease_GCPN6.part01 Urease_GCPN6.part02 > Urease_GCPN6.zip
-unzip Urease_GCPN6.zip
-```
+Limitations
 
-## License
+* No experimental caspase-3 inhibition assays were performed.
+* The generated structures were not confirmed as active or selective caspase-3 inhibitors.
+* Generative-model training metrics do not measure biological activity.
+* Further filtering, activity prediction, molecular docking, molecular dynamics, synthesis, and wet-laboratory validation may be required.
+* The quality of the generated chemical space depends on the composition and curation of the source dataset.
 
-This project is licensed under the Apache License 2.0.
+TorchDrug Integration
+
+This project uses TorchDrug for molecular graph representation, neural-network modeling, and molecular generation. Additional information is available in the TorchDrug molecule-generation tutorial.
+
+Model File Recombination
+
+The trained model was divided into four parts to satisfy file-size limitations. On Linux or macOS, reconstruct the model using:
+
+cat gcpn6.pkl.001 gcpn6.pkl.002 gcpn6.pkl.003 gcpn6.pkl.004 > gcpn6.pkl
+
+To verify that the reconstructed file was created:
+
+ls -lh gcpn6.pkl
+
+The reconstructed gcpn6.pkl file is a serialized model file and should not be unzipped.
+
+References
+
+* TorchDrug molecule-generation tutorial
+* BindingDB
+* You J, Liu B, Ying Z, Pande V, Leskovec J. Graph Convolutional Policy Network for Goal-Directed Molecular Graph Generation. Advances in Neural Information Processing Systems. 2018;31.
+
+License
+
+This project is licensed under the Apache License 2.0. See the LICENSE file for details.
